@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
 package expense_management.java;
 
 import java.awt.Image;
@@ -13,14 +9,13 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
-import javax.swing.JLabel;
 import javax.swing.table.DefaultTableModel;
-
 
 /**
  *
  * @author PC
  */
+
 public class UserForm extends javax.swing.JFrame {
     
     private final String staffId;
@@ -53,7 +48,7 @@ public class UserForm extends javax.swing.JFrame {
         
             DefaultTableModel tableModel = (DefaultTableModel) userExpenseTable.getModel();
             
-            tableModel.setColumnIdentifiers(new Object[]{"Date", "Description", "Amount", "Picture"});
+            tableModel.setColumnIdentifiers(new Object[]{"No", "Date", "Description", "Amount", "Picture"});
             
             ResultSet rs = stmt.executeQuery();
         
@@ -85,20 +80,24 @@ public class UserForm extends javax.swing.JFrame {
                     Logger.getLogger(UserForm.class.getName()).log(Level.SEVERE, null, ex);
                 }
                 
+                int i = 1;
                 
                 Object[] row = {
+                    i++,
                     rs.getDate("date"),
                     rs.getString("description"),
-                    rs.getDouble("amount"),
+                    "$\u00A0" + rs.getDouble("amount"),
                     imageIcon
                 };
                 tableModel.addRow(row);
             }
-            
-            userExpenseTable.getColumnModel().getColumn(3).setCellRenderer(new ImageRender());
-            
-        } 
-        catch (SQLException ex) {}
+            userExpenseTable.getColumnModel().getColumn(4).setCellRenderer(new ImageRender());
+            userExpenseTable.setFocusable(false);
+            userExpenseTable.setCellSelectionEnabled(false);
+            userExpenseTable.setColumnSelectionAllowed(false);
+            userExpenseTable.setRowSelectionAllowed(false);
+
+        } catch (SQLException ex) {}
     }
 
     /**
@@ -114,6 +113,7 @@ public class UserForm extends javax.swing.JFrame {
         desc = new javax.swing.JLabel();
         tablePanelForUser = new javax.swing.JScrollPane();
         userExpenseTable = new javax.swing.JTable();
+        btnLogout = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -130,17 +130,28 @@ public class UserForm extends javax.swing.JFrame {
         userExpenseTable.setBackground(new java.awt.Color(255, 255, 255));
         userExpenseTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null}
             },
             new String [] {
-                "Date", "Description", "Amount", "Picture"
+                "No", "Date", "Description", "Amount", "Picture"
             }
         ));
         userExpenseTable.setRowHeight(50);
+        userExpenseTable.setSelectionBackground(new java.awt.Color(255, 255, 255));
+        userExpenseTable.setSelectionForeground(new java.awt.Color(0, 0, 0));
         tablePanelForUser.setViewportView(userExpenseTable);
+
+        btnLogout.setBackground(new java.awt.Color(255, 0, 0));
+        btnLogout.setForeground(new java.awt.Color(255, 255, 255));
+        btnLogout.setText("Logout");
+        btnLogout.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnLogoutActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -151,21 +162,25 @@ public class UserForm extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(tablePanelForUser, javax.swing.GroupLayout.DEFAULT_SIZE, 788, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(desc)
-                            .addComponent(title))
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                        .addComponent(desc)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(title)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnLogout)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(btnLogout)
+                    .addComponent(title))
                 .addGap(12, 12, 12)
-                .addComponent(title)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(desc)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(tablePanelForUser, javax.swing.GroupLayout.DEFAULT_SIZE, 307, Short.MAX_VALUE)
+                .addComponent(tablePanelForUser, javax.swing.GroupLayout.DEFAULT_SIZE, 313, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -173,41 +188,49 @@ public class UserForm extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
+    private void btnLogoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLogoutActionPerformed
+        // TODO add your handling code here:
+        LoginForm loginForm = new LoginForm();
+        loginForm.setVisible(true);
+        dispose();
+    }//GEN-LAST:event_btnLogoutActionPerformed
+
     /**
      * @param args the command line arguments
      */
     public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
+    /* Set the Nimbus look and feel */
+    //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
+    /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
          * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
+     */
+    try {
+        for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+            if ("Nimbus".equals(info.getName())) {
+                javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                break;
             }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(UserForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(UserForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(UserForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(UserForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(() -> {
-            UserForm userForm = new UserForm("unknown");
-            userForm.setVisible(true);
-        });
+    } catch (ClassNotFoundException ex) {
+        java.util.logging.Logger.getLogger(UserForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+    } catch (InstantiationException ex) {
+        java.util.logging.Logger.getLogger(UserForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+    } catch (IllegalAccessException ex) {
+        java.util.logging.Logger.getLogger(UserForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+    } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+        java.util.logging.Logger.getLogger(UserForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
     }
+    //</editor-fold>
+
+    /* Create and display the form */
+    java.awt.EventQueue.invokeLater(() -> {
+        UserForm userForm = new UserForm("unknown");
+        userForm.setVisible(true);
+    });
+}
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnLogout;
     private javax.swing.JLabel desc;
     private javax.swing.JScrollPane tablePanelForUser;
     private javax.swing.JLabel title;

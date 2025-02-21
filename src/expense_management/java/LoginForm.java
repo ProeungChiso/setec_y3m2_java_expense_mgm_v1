@@ -5,6 +5,7 @@
 package expense_management.java;
 
 import java.sql.*;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -45,6 +46,12 @@ public class LoginForm extends javax.swing.JFrame {
 
         password.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         password.setText("Password");
+
+        inputPassword.setFont(new java.awt.Font("Segoe UI", 3, 18)); // NOI18N
+        inputPassword.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+
+        inputUsername.setFont(new java.awt.Font("Segoe UI", 3, 18)); // NOI18N
+        inputUsername.setHorizontalAlignment(javax.swing.JTextField.CENTER);
 
         javax.swing.GroupLayout inputPlaceLayout = new javax.swing.GroupLayout(inputPlace);
         inputPlace.setLayout(inputPlaceLayout);
@@ -111,56 +118,61 @@ public class LoginForm extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoginActionPerformed
-        
+
         String getUser = inputUsername.getText();
-        
+
         char[] getPass = inputPassword.getPassword();
         String convertPass = new String(getPass);
-        
-        System.out.println("DATA: "+ getUser+" - "+ convertPass);
-        
+
+        System.out.println("DATA: " + getUser + " - " + convertPass);
+
         Staff getResult = authenticate(getUser, convertPass);
-        
-        if(getResult != null && "admin".equalsIgnoreCase(getResult.getRole())){
+
+        if (getResult != null && "admin".equalsIgnoreCase(getResult.getRole())) {
             AdminForm adminForm = new AdminForm();
             adminForm.setVisible(true);
             dispose();
             System.out.println("Has Role Admin");
-        }else{
+        } else {
             UserForm userForm = new UserForm(getResult.getId());
             userForm.setVisible(true);
             dispose();
             System.out.println("No Role Admiin");
         }
-            
+
     }//GEN-LAST:event_btnLoginActionPerformed
-    
+
     public Staff authenticate(String username, String password) {
-        
-    String url = "jdbc:mysql://localhost:3306/db_java_v1";
-    String userDb = "root";
-    String passDb = "";
 
-    try (Connection cont = DriverManager.getConnection(url, userDb, passDb)) {
-        String query = "SELECT * FROM staff WHERE username=? AND password=?";
-        PreparedStatement stmt = cont.prepareStatement(query);
+        String url = "jdbc:mysql://localhost:3306/db_java_v1";
+        String userDb = "root";
+        String passDb = "";
 
-        stmt.setString(1, username);
-        stmt.setString(2, password);
+        try (Connection cont = DriverManager.getConnection(url, userDb, passDb)) {
+            String query = "SELECT * FROM staff WHERE username=? AND password=?";
+            PreparedStatement stmt = cont.prepareStatement(query);
 
-        ResultSet rs = stmt.executeQuery();
+            stmt.setString(1, username);
+            stmt.setString(2, password);
 
-        if (rs.next()) { // Check if there is a result
-            String id = rs.getString("s_id");
-            String role = rs.getString("role");
-            System.out.println("User position: " + role);
-            return new Staff(id, role);
+            ResultSet rs = stmt.executeQuery();
+
+            if (rs.next()) { // Check if there is a result
+                String id = rs.getString("s_id");
+                String role = rs.getString("role");
+
+                JOptionPane.showMessageDialog(null, "Login Successful!", "Success", JOptionPane.INFORMATION_MESSAGE);
+
+                System.out.println("User position: " + role);
+                return new Staff(id, role);
+            }
+            JOptionPane.showMessageDialog(null, "Invalid username or password!", "Login Failed", JOptionPane.ERROR_MESSAGE);
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "Database error occurred!", "Error", JOptionPane.ERROR_MESSAGE);
         }
-    } catch (SQLException ex) {}
-    return null;
-}
+        return null;
+    }
 
-    
     /**
      * @param args the command line arguments
      */
