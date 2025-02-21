@@ -8,9 +8,14 @@ import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
-import java.sql.*; 
+import java.sql.*;
 import javax.imageio.ImageIO;
+import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -94,6 +99,11 @@ public class AdminForm extends javax.swing.JFrame {
         btnCreate.setBackground(new java.awt.Color(0, 204, 0));
         btnCreate.setForeground(new java.awt.Color(255, 255, 255));
         btnCreate.setText("Create");
+        btnCreate.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCreateActionPerformed(evt);
+            }
+        });
 
         btnUpdate.setBackground(new java.awt.Color(0, 51, 255));
         btnUpdate.setForeground(new java.awt.Color(255, 255, 255));
@@ -159,55 +169,78 @@ public class AdminForm extends javax.swing.JFrame {
         loginForm.setVisible(true);
         dispose();
     }//GEN-LAST:event_btnLogoutActionPerformed
-    
-    
-    public void getAllExpense(){
+
+    private void btnCreateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCreateActionPerformed
+        // TODO add your handling code here:
+        String info = """
+                      These are fields that we use to create new expense!
+                      ---------------------------------------------------------------------
+                       - Staff Id
+                       - Date
+                       - Description
+                       - Picture
+                      """;
         
+        int res = JOptionPane.showConfirmDialog(rootPane, info, "Create New Expense", JOptionPane.OK_CANCEL_OPTION);
+        
+        if(res == JOptionPane.OK_OPTION){
+            System.out.println("OK");
+            CreateForm createForm = new CreateForm();
+            createForm.setVisible(true);
+            dispose();
+        }else{
+            System.out.println("Cancel");
+        }
+    }//GEN-LAST:event_btnCreateActionPerformed
+
+    public void getAllExpense() {
+
         String url = "jdbc:mysql://localhost:3306/db_java_v1";
         String userDb = "root";
         String passDb = "";
-        
-        try(Connection cont = DriverManager.getConnection(url, userDb, passDb)){
-            
+
+        try (Connection cont = DriverManager.getConnection(url, userDb, passDb)) {
+
             String query = "SELECT expense.date, expense.description, expense.amount, expense.picture, staff.s_name FROM expense INNER JOIN staff ON expense.s_id=staff.s_id";
-            
+
             PreparedStatement stmt = cont.prepareStatement(query);
-            
+
             ResultSet rs = stmt.executeQuery();
-            
+
             System.out.println(rs.findColumn("s_name"));
-            
+
             DefaultTableModel table = (DefaultTableModel) userTable.getModel();
-            
+
             table.setColumnIdentifiers(new Object[]{"No", "Date", "Description", "Amount", "Picture", "Staff Name"});
-            
+
             table.setNumRows(0);
-            
+
             int i = 1;
-            
-            while(rs.next()){
-                
+
+            while (rs.next()) {
+
                 InputStream streamImage = rs.getBinaryStream("picture");
                 ImageIcon imageIcon = null;
-                
+
                 try {
                     if (streamImage != null) {
                         BufferedImage image = ImageIO.read(streamImage);
-                        
+
                         int oWidth = image.getWidth();
                         int oHeight = image.getHeight();
-                        
+
                         int nHeight = 50;
                         int nWidth = (int) ((double) nHeight / oHeight * oWidth);
-                        
+
                         imageIcon = new ImageIcon(image);
-                        
+
                         Image img = imageIcon.getImage();
                         Image resize = img.getScaledInstance(nWidth, nHeight, Image.SCALE_SMOOTH);
                         imageIcon = new ImageIcon(resize);
                     }
-                } catch (IOException ex) {}
-                
+                } catch (IOException ex) {
+                }
+
                 Object[] row = {
                     i++,
                     rs.getDate("date"),
@@ -216,18 +249,17 @@ public class AdminForm extends javax.swing.JFrame {
                     imageIcon,
                     rs.getString("s_name")
                 };
-                
+
                 table.addRow(row);
             }
             userTable.getColumnModel().getColumn(4).setCellRenderer(new ImageRender());
-            
-        }catch(SQLException ex){
-            
+
+        } catch (SQLException ex) {
+
         }
-        
-        
+
     }
-    
+
     /**
      * @param args the command line arguments
      */
