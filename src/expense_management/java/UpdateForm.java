@@ -6,7 +6,6 @@ package expense_management.java;
 
 import expense_management.java.domain.Staff;
 import expense_management.java.dto.CreateExpenseRequest;
-import expense_management.java.dto.UpdateExpenseRequest;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
@@ -32,12 +31,13 @@ public class UpdateForm extends javax.swing.JFrame {
 
     CreateExpenseRequest createRequest = new CreateExpenseRequest();
     Staff staff = new Staff();
-    UpdateExpenseRequest updateRequest = new UpdateExpenseRequest();
+
+    int expenseId;
 
     /**
      * Creates new form CreateForm
      */
-    public UpdateForm() {
+    public UpdateForm(int expenseId) {
         initComponents();
         inputAmount.addKeyListener(new java.awt.event.KeyAdapter() {
             @Override
@@ -53,24 +53,31 @@ public class UpdateForm extends javax.swing.JFrame {
                 }
             }
         });
+
+        this.expenseId = expenseId;
+
         getStaffs();
-        
-        System.out.println(updateRequest.getId());
-        
-        getExpenseById(updateRequest.getId());
+
+        System.out.println(expenseId);
+
+        getExpenseById(expenseId);
     }
-    
-    public void getExpenseById(int id){
+
+    public UpdateForm() {
+        initComponents();
+    }
+
+    public void getExpenseById(int id) {
         String url = "jdbc:mysql://localhost:3306/db_java_v1";
         String userDb = "root";
         String passDb = "";
-        
+
         try (Connection cont = DriverManager.getConnection(url, userDb, passDb)) {
 
-            String query = "SELECT * FROM expense WHERE id=?";
+            String query = "SELECT * FROM expense INNER JOIN staff ON expense.s_id = staff.s_id WHERE expense.id = ?";
 
             PreparedStatement stmt = cont.prepareStatement(query);
-            
+
             stmt.setInt(1, id);
 
             ResultSet rs = stmt.executeQuery();
@@ -78,11 +85,16 @@ public class UpdateForm extends javax.swing.JFrame {
             while (rs.next()) {
                 Timestamp date = rs.getTimestamp("date");
                 String description = rs.getString("description");
-                
-                
+                Double amount = rs.getDouble("amount");
+                String filename = rs.getBlob("picture").toString();
+                String staff = rs.getString("s_name");
+
                 dateChooser.setDate(new Date(date.getTime()));
                 inputDescription.setText(description);
-                
+                inputAmount.setText(amount.toString());
+                lalImage.setText(filename);
+                inputStaff.setSelectedItem(staff);
+
             }
 
         } catch (SQLException ex) {
@@ -288,6 +300,9 @@ public class UpdateForm extends javax.swing.JFrame {
 
     private void btnCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelActionPerformed
         // TODO add your handling code here:
+        AdminForm adminForm = new AdminForm();
+        adminForm.setVisible(true);
+        dispose();
     }//GEN-LAST:event_btnCancelActionPerformed
 
     private void inputAmountActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_inputAmountActionPerformed
@@ -334,37 +349,32 @@ public class UpdateForm extends javax.swing.JFrame {
 
     private void btnCreateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCreateActionPerformed
 
-        // Get Date
         Date selectedDate = dateChooser.getDate();
-        if(selectedDate == null){
+        if (selectedDate == null) {
             System.out.println("Error :: Date is null");
             return;
         }
-        
+
         Timestamp timestamp = new Timestamp(selectedDate.getTime());
 
-        // Get Amount
         Double amount = 0.00;
-        try{
+        try {
             amount = Double.valueOf(inputAmount.getText().trim());
-        }catch(NumberFormatException e){
+        } catch (NumberFormatException e) {
             System.out.println("Invalid amount format! Please enter a valid mumber.");
         }
 
-        // Get Description
         String description = inputDescription.getText();
 
-        // Get Staff
         String staffId = staff.getId();
 
-        // Get Picture
         byte[] picture = createRequest.getPicture();
 
         String url = "jdbc:mysql://localhost:3306/db_java_v1";
         String userDb = "root";
         String passDb = "";
 
-        String query = "INSERT INTO expense (date, description, amount, picture, s_id) VALUES (?, ?, ?, ?, ?)";
+        String query = "UPDATE expense SET date = ?, description = ?, amount = ?, picture = ?, s_id = ? WHERE id = ?";
 
         try (Connection conn = DriverManager.getConnection(url, userDb, passDb); PreparedStatement stmt = conn.prepareStatement(query)) {
 
@@ -372,27 +382,27 @@ public class UpdateForm extends javax.swing.JFrame {
             stmt.setTimestamp(1, timestamp);
             stmt.setString(2, description);
             stmt.setDouble(3, amount);
-            stmt.setBytes(4, picture); 
+            stmt.setBytes(4, picture);
             stmt.setString(5, staffId);
-            
+            stmt.setInt(6, expenseId);
 
-            // Execute the insert
             int rowsInserted = stmt.executeUpdate();
 
             if (rowsInserted > 0) {
-                System.out.println("Expense record inserted successfully!");
-                JOptionPane.showMessageDialog(null, "Expense Created!", "Success", JOptionPane.INFORMATION_MESSAGE);
-                
+                System.out.println("Expense record updated successfully!");
+                JOptionPane.showMessageDialog(null, "Expense Updated!", "Success", JOptionPane.INFORMATION_MESSAGE);
+                AdminForm adminForm = new AdminForm();
+                adminForm.setVisible(true);
+                dispose();
+
             } else {
-                System.out.println("Failed to insert expense record.");
+                System.out.println("Failed to update expense record.");
                 JOptionPane.showMessageDialog(null, "Expense Failed", "Failed", JOptionPane.ERROR_MESSAGE);
             }
 
         } catch (SQLException ex) {
             ex.printStackTrace();
         }
-
-        System.out.println(timestamp + " :: " + amount + " :: " + description + " :: " + staffId + " :: " + createRequest.getPicture());
     }//GEN-LAST:event_btnCreateActionPerformed
 
     private void inputStaffActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_inputStaffActionPerformed

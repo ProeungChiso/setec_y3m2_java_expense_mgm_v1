@@ -15,75 +15,72 @@ import javax.swing.table.DefaultTableModel;
  *
  * @author PC
  */
-
 public class UserForm extends javax.swing.JFrame {
-    
+
     private final String staffId;
-    
+
     public UserForm(String staffId) {
         this.staffId = staffId;
         initComponents();
-        System.out.println("ID from login: "+staffId); 
+        System.out.println("ID from login: " + staffId);
         getStaffExpense();
     }
-    
-    public UserForm(){
+
+    public UserForm() {
         this.staffId = "unknown";
         initComponents();
     }
-    
-    public void getStaffExpense(){
-        
+
+    public void getStaffExpense() {
+
         System.out.println("Fetching expenses for staff ID: " + staffId);
-        
+
         String url = "jdbc:mysql://localhost:3306/db_java_v1";
         String userDb = "root";
         String passDb = "";
-        
-        try(Connection cont = DriverManager.getConnection(url, userDb, passDb)){
-            
+
+        try (Connection cont = DriverManager.getConnection(url, userDb, passDb)) {
+
             String query = "SELECT date, description, amount, picture FROM expense WHERE s_id=?";
             PreparedStatement stmt = cont.prepareStatement(query);
             stmt.setString(1, staffId);
-        
+
             DefaultTableModel tableModel = (DefaultTableModel) userExpenseTable.getModel();
-            
+
             tableModel.setColumnIdentifiers(new Object[]{"No", "Date", "Description", "Amount", "Picture"});
-            
+
             ResultSet rs = stmt.executeQuery();
-        
+
             tableModel.setRowCount(0);
-            
+
             int i = 1;
-            
+
             while (rs.next()) {
-                
+
                 InputStream streamImage = rs.getBinaryStream("picture");
                 ImageIcon imageIcon = null;
-                
+
                 try {
                     if (streamImage != null) {
                         BufferedImage image = ImageIO.read(streamImage);
-                        
+
                         int oWidth = image.getWidth();
                         int oHeight = image.getHeight();
-                        
+
                         int nHeight = 50;
                         int nWidth = (int) ((double) nHeight / oHeight * oWidth);
-                        
+
                         imageIcon = new ImageIcon(image);
-                        
+
                         Image img = imageIcon.getImage();
                         Image resize = img.getScaledInstance(nWidth, nHeight, Image.SCALE_SMOOTH);
                         imageIcon = new ImageIcon(resize);
                     }
-                    
+
                 } catch (IOException ex) {
                     Logger.getLogger(UserForm.class.getName()).log(Level.SEVERE, null, ex);
                 }
-                
-                
-                
+
                 Object[] row = {
                     i++,
                     rs.getDate("date"),
@@ -99,7 +96,8 @@ public class UserForm extends javax.swing.JFrame {
             userExpenseTable.setColumnSelectionAllowed(false);
             userExpenseTable.setRowSelectionAllowed(false);
 
-        } catch (SQLException ex) {}
+        } catch (SQLException ex) {
+        }
     }
 
     /**
@@ -201,35 +199,35 @@ public class UserForm extends javax.swing.JFrame {
      * @param args the command line arguments
      */
     public static void main(String args[]) {
-    /* Set the Nimbus look and feel */
-    //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-    /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
+        /* Set the Nimbus look and feel */
+        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
+        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
          * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-     */
-    try {
-        for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-            if ("Nimbus".equals(info.getName())) {
-                javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                break;
+         */
+        try {
+            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+                if ("Nimbus".equals(info.getName())) {
+                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                    break;
+                }
             }
+        } catch (ClassNotFoundException ex) {
+            java.util.logging.Logger.getLogger(UserForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (InstantiationException ex) {
+            java.util.logging.Logger.getLogger(UserForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (IllegalAccessException ex) {
+            java.util.logging.Logger.getLogger(UserForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+            java.util.logging.Logger.getLogger(UserForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
-    } catch (ClassNotFoundException ex) {
-        java.util.logging.Logger.getLogger(UserForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-    } catch (InstantiationException ex) {
-        java.util.logging.Logger.getLogger(UserForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-    } catch (IllegalAccessException ex) {
-        java.util.logging.Logger.getLogger(UserForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-    } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-        java.util.logging.Logger.getLogger(UserForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-    }
-    //</editor-fold>
+        //</editor-fold>
 
-    /* Create and display the form */
-    java.awt.EventQueue.invokeLater(() -> {
-        UserForm userForm = new UserForm("unknown");
-        userForm.setVisible(true);
-    });
-}
+        /* Create and display the form */
+        java.awt.EventQueue.invokeLater(() -> {
+            UserForm userForm = new UserForm("unknown");
+            userForm.setVisible(true);
+        });
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnLogout;

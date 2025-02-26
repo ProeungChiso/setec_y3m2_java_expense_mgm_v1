@@ -252,6 +252,10 @@ public class CreateForm extends javax.swing.JFrame {
 
     private void btnCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelActionPerformed
         // TODO add your handling code here:
+        
+        AdminForm adminForm = new AdminForm();
+        adminForm.setVisible(true);
+        dispose();        
     }//GEN-LAST:event_btnCancelActionPerformed
 
     private void inputAmountActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_inputAmountActionPerformed

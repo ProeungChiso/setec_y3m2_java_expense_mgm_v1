@@ -10,7 +10,6 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
 import java.sql.*;
-import java.util.Arrays;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
@@ -265,7 +264,7 @@ public class AdminForm extends javax.swing.JFrame {
             
             request.setId(expenseId);
 
-            UpdateForm updateForm = new UpdateForm();
+            UpdateForm updateForm = new UpdateForm(expenseId);
 
             updateForm.setVisible(true);
             dispose();
