@@ -4,11 +4,13 @@
  */
 package expense_management.java;
 
+import expense_management.java.dto.UpdateExpenseRequest;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
 import java.sql.*;
+import java.util.Arrays;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
@@ -104,6 +106,11 @@ public class AdminForm extends javax.swing.JFrame {
         btnUpdate.setBackground(new java.awt.Color(0, 51, 255));
         btnUpdate.setForeground(new java.awt.Color(255, 255, 255));
         btnUpdate.setText("Update");
+        btnUpdate.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnUpdateActionPerformed(evt);
+            }
+        });
 
         btnDelete.setBackground(new java.awt.Color(255, 0, 0));
         btnDelete.setForeground(new java.awt.Color(255, 255, 255));
@@ -181,26 +188,92 @@ public class AdminForm extends javax.swing.JFrame {
                        - Description
                        - Picture
                       """;
-        
+
         int res = JOptionPane.showConfirmDialog(rootPane, info, "Create New Expense", JOptionPane.OK_CANCEL_OPTION);
-        
-        if(res == JOptionPane.OK_OPTION){
+
+        if (res == JOptionPane.OK_OPTION) {
             System.out.println("OK");
             CreateForm createForm = new CreateForm();
             createForm.setVisible(true);
             dispose();
-        }else{
+        } else {
             System.out.println("Cancel");
         }
     }//GEN-LAST:event_btnCreateActionPerformed
 
     private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
-        // TODO add your handling code here:
-        
-        System.out.println(userTable.getSelectedColumn());
-        System.out.println(userTable.getSelectedRow());
-        
+
+        String url = "jdbc:mysql://localhost:3306/db_java_v1";
+        String userDb = "root";
+        String passDb = "";
+
+        String query = "DELETE FROM expense WHERE id=?";
+
+        int row = userTable.getSelectedRow();
+
+        int expenseId;
+
+        if (row != 1) {
+            int columnCount = userTable.getColumnCount();
+            Object[] data = new Object[columnCount];
+
+            for (int i = 0; i < columnCount; i++) {
+                data[i] = userTable.getValueAt(row, i);
+            }
+
+            String getExpenseIdString = (String) data[0];
+
+            expenseId = Integer.parseInt(getExpenseIdString);
+
+            System.out.println(expenseId);
+
+            if (expenseId != 0) {
+                try (Connection cont = DriverManager.getConnection(url, userDb, passDb)) {
+
+                    PreparedStatement stmt = cont.prepareStatement(query);
+
+                    stmt.setInt(1, expenseId);
+
+                    stmt.execute();
+
+                    getAllExpense();
+
+                } catch (SQLException ex) {
+                    ex.printStackTrace();
+                }
+            }
+        }
     }//GEN-LAST:event_btnDeleteActionPerformed
+
+    private void btnUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateActionPerformed
+        // TODO add your handling code here:
+
+        UpdateExpenseRequest request = new UpdateExpenseRequest();
+
+        int row = userTable.getSelectedRow();
+
+        if (row != -1) {
+            int columnCount = userTable.getColumnCount();
+            Object[] data = new Object[columnCount];
+
+            for (int i = 0; i < columnCount; i++) {
+                data[i] = userTable.getValueAt(row, i);
+            }
+
+            String getExpenseIdString = (String) data[0];
+            int expenseId = Integer.parseInt(getExpenseIdString);
+            
+            request.setId(expenseId);
+
+            UpdateForm updateForm = new UpdateForm();
+
+            updateForm.setVisible(true);
+            dispose();
+        } else {
+            JOptionPane.showMessageDialog(this, "Please select a row to update.", "No row selected", JOptionPane.WARNING_MESSAGE);
+        }
+
+    }//GEN-LAST:event_btnUpdateActionPerformed
 
     public void getAllExpense() {
 
@@ -251,7 +324,7 @@ public class AdminForm extends javax.swing.JFrame {
                 }
 
                 Object[] row = {
-                    i++,
+                    rs.getString("id"),
                     rs.getDate("date"),
                     rs.getString("description"),
                     rs.getDouble("amount"),
