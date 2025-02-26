@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package expense_management.java;
+package expense_management.java.domain;
 
 /**
  *
@@ -12,6 +12,10 @@ public class Staff {
     
     private String id;
     private String role;
+    
+    public Staff(){
+        
+    }
     
     public Staff(String id, String role){
         

@@ -4,6 +4,7 @@
  */
 package expense_management.java;
 
+import expense_management.java.domain.Staff;
 import java.sql.*;
 import javax.swing.JOptionPane;
 

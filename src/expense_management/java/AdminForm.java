@@ -10,12 +10,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.sql.*;
 import javax.imageio.ImageIO;
-import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
-import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -112,6 +108,11 @@ public class AdminForm extends javax.swing.JFrame {
         btnDelete.setBackground(new java.awt.Color(255, 0, 0));
         btnDelete.setForeground(new java.awt.Color(255, 255, 255));
         btnDelete.setText("Delete");
+        btnDelete.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDeleteActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -193,6 +194,14 @@ public class AdminForm extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btnCreateActionPerformed
 
+    private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
+        // TODO add your handling code here:
+        
+        System.out.println(userTable.getSelectedColumn());
+        System.out.println(userTable.getSelectedRow());
+        
+    }//GEN-LAST:event_btnDeleteActionPerformed
+
     public void getAllExpense() {
 
         String url = "jdbc:mysql://localhost:3306/db_java_v1";
@@ -201,7 +210,7 @@ public class AdminForm extends javax.swing.JFrame {
 
         try (Connection cont = DriverManager.getConnection(url, userDb, passDb)) {
 
-            String query = "SELECT expense.date, expense.description, expense.amount, expense.picture, staff.s_name FROM expense INNER JOIN staff ON expense.s_id=staff.s_id";
+            String query = "SELECT expense.id, expense.date, expense.description, expense.amount, expense.picture, staff.s_name FROM expense INNER JOIN staff ON expense.s_id=staff.s_id";
 
             PreparedStatement stmt = cont.prepareStatement(query);
 

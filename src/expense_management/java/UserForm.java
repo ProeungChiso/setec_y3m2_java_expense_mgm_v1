@@ -53,7 +53,9 @@ public class UserForm extends javax.swing.JFrame {
             ResultSet rs = stmt.executeQuery();
         
             tableModel.setRowCount(0);
-        
+            
+            int i = 1;
+            
             while (rs.next()) {
                 
                 InputStream streamImage = rs.getBinaryStream("picture");
@@ -80,7 +82,7 @@ public class UserForm extends javax.swing.JFrame {
                     Logger.getLogger(UserForm.class.getName()).log(Level.SEVERE, null, ex);
                 }
                 
-                int i = 1;
+                
                 
                 Object[] row = {
                     i++,
