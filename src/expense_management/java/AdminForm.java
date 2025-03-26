@@ -4,6 +4,7 @@
  */
 package expense_management.java;
 
+import config.DatabaseConfig;
 import expense_management.java.dto.UpdateExpenseRequest;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
@@ -19,7 +20,7 @@ import javax.swing.table.DefaultTableModel;
  *
  * @author PC
  */
-public class AdminForm extends javax.swing.JFrame {
+public final class AdminForm extends javax.swing.JFrame {
 
     /**
      * Creates new form AdminForm
@@ -27,6 +28,7 @@ public class AdminForm extends javax.swing.JFrame {
     public AdminForm() {
         initComponents();
         getAllExpense();
+        getAllStaff();
     }
 
     /**
@@ -47,9 +49,13 @@ public class AdminForm extends javax.swing.JFrame {
         btnCreate = new javax.swing.JButton();
         btnUpdate = new javax.swing.JButton();
         btnDelete = new javax.swing.JButton();
+        btnCreateNewStaff = new javax.swing.JButton();
+        staffTitle = new javax.swing.JLabel();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        staffTable = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setPreferredSize(new java.awt.Dimension(800, 600));
+        setPreferredSize(new java.awt.Dimension(800, 900));
 
         title.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
         title.setText("WELCOME ADMIN");
@@ -120,6 +126,34 @@ public class AdminForm extends javax.swing.JFrame {
             }
         });
 
+        btnCreateNewStaff.setBackground(new java.awt.Color(0, 0, 255));
+        btnCreateNewStaff.setForeground(new java.awt.Color(255, 255, 255));
+        btnCreateNewStaff.setText("Add New Staff");
+        btnCreateNewStaff.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCreateNewStaffActionPerformed(evt);
+            }
+        });
+
+        staffTitle.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        staffTitle.setText("STAFFS");
+
+        staffTable.setBackground(new java.awt.Color(255, 255, 255));
+        staffTable.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "No", "Staff Name", "Position", "Username"
+            }
+        ));
+        staffTable.setRowHeight(50);
+        staffTable.setRowSelectionAllowed(false);
+        jScrollPane2.setViewportView(staffTable);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -132,16 +166,19 @@ public class AdminForm extends javax.swing.JFrame {
                         .addComponent(title)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 509, Short.MAX_VALUE)
                         .addComponent(btnLogout))
+                    .addComponent(jScrollPane2)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(desc)
                             .addComponent(userTitle)
+                            .addComponent(desc)
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(btnCreate)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(btnUpdate)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(btnDelete)))
+                                .addComponent(btnDelete))
+                            .addComponent(staffTitle)
+                            .addComponent(btnCreateNewStaff))
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
@@ -154,7 +191,7 @@ public class AdminForm extends javax.swing.JFrame {
                     .addComponent(title))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(desc)
-                .addGap(18, 18, 18)
+                .addGap(29, 29, 29)
                 .addComponent(userTitle)
                 .addGap(9, 9, 9)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 263, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -163,7 +200,13 @@ public class AdminForm extends javax.swing.JFrame {
                     .addComponent(btnCreate)
                     .addComponent(btnUpdate)
                     .addComponent(btnDelete))
-                .addContainerGap(121, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(staffTitle)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 266, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnCreateNewStaff)
+                .addContainerGap(151, Short.MAX_VALUE))
         );
 
         pack();
@@ -274,6 +317,49 @@ public class AdminForm extends javax.swing.JFrame {
 
     }//GEN-LAST:event_btnUpdateActionPerformed
 
+    private void btnCreateNewStaffActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCreateNewStaffActionPerformed
+        // TODO add your handling code here:
+        CreateStaffForm createStaffForm = new CreateStaffForm();
+        createStaffForm.setVisible(true);
+        dispose();
+    }//GEN-LAST:event_btnCreateNewStaffActionPerformed
+    
+    public void getAllStaff(){
+        
+        String sql = "SELECT * FROM staff WHERE role = 'user'";
+        
+        try{
+            Connection conn = DatabaseConfig.getConnection();
+            
+            PreparedStatement pst = conn.prepareStatement(sql);
+
+            ResultSet rs = pst.executeQuery();
+            
+            DefaultTableModel table = (DefaultTableModel) staffTable.getModel();
+
+            table.setColumnIdentifiers(new Object[]{"No", "Staff Name", "Position", "Username"});
+
+            table.setNumRows(0);
+            
+            int i = 1;            
+
+            while(rs.next()){
+                
+                Object[] row = {
+                    i++,
+                    rs.getString("s_name"),
+                    rs.getString("position"),
+                    rs.getString("username")
+                };
+                
+                table.addRow(row);
+            }
+            
+        }catch(SQLException e){
+            e.printStackTrace();
+        }
+    }
+    
     public void getAllExpense() {
 
         String url = "jdbc:mysql://localhost:3306/db_java_v1";
@@ -288,7 +374,7 @@ public class AdminForm extends javax.swing.JFrame {
 
             ResultSet rs = stmt.executeQuery();
 
-            System.out.println(rs.findColumn("s_name"));
+            //System.out.println(rs.findColumn("s_name"));
 
             DefaultTableModel table = (DefaultTableModel) userTable.getModel();
 
@@ -378,11 +464,15 @@ public class AdminForm extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCreate;
+    private javax.swing.JButton btnCreateNewStaff;
     private javax.swing.JButton btnDelete;
     private javax.swing.JButton btnLogout;
     private javax.swing.JButton btnUpdate;
     private javax.swing.JLabel desc;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JTable staffTable;
+    private javax.swing.JLabel staffTitle;
     private javax.swing.JLabel title;
     private javax.swing.JTable userTable;
     private javax.swing.JLabel userTitle;
