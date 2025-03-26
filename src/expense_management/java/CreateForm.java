@@ -267,7 +267,7 @@ public class CreateForm extends javax.swing.JFrame {
         JFileChooser fileChooser = new JFileChooser();
         fileChooser.setDialogTitle("Select an Image");
         fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
-        fileChooser.setCurrentDirectory(new File("C:/Users/PC/OneDrive/Pictures"));
+        fileChooser.setCurrentDirectory(new File("C:\\Users\\user\\Pictures"));
 
         fileChooser.setFileFilter(new javax.swing.filechooser.FileNameExtensionFilter("Image Files", "jpg", "png", "jpeg"));
 
