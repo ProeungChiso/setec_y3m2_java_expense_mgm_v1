@@ -53,6 +53,10 @@ public final class AdminForm extends javax.swing.JFrame {
         staffTitle = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
         staffTable = new javax.swing.JTable();
+        jButton1 = new javax.swing.JButton();
+        btnDeleteStaff = new javax.swing.JButton();
+        searchBox = new javax.swing.JTextField();
+        btnSearch = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setPreferredSize(new java.awt.Dimension(800, 900));
@@ -126,7 +130,7 @@ public final class AdminForm extends javax.swing.JFrame {
             }
         });
 
-        btnCreateNewStaff.setBackground(new java.awt.Color(0, 0, 255));
+        btnCreateNewStaff.setBackground(new java.awt.Color(0, 255, 51));
         btnCreateNewStaff.setForeground(new java.awt.Color(255, 255, 255));
         btnCreateNewStaff.setText("Add New Staff");
         btnCreateNewStaff.addActionListener(new java.awt.event.ActionListener() {
@@ -154,6 +158,26 @@ public final class AdminForm extends javax.swing.JFrame {
         staffTable.setRowSelectionAllowed(false);
         jScrollPane2.setViewportView(staffTable);
 
+        jButton1.setBackground(new java.awt.Color(0, 0, 255));
+        jButton1.setForeground(new java.awt.Color(255, 255, 255));
+        jButton1.setText("Update");
+
+        btnDeleteStaff.setBackground(new java.awt.Color(255, 0, 0));
+        btnDeleteStaff.setForeground(new java.awt.Color(255, 255, 255));
+        btnDeleteStaff.setText("Delete");
+        btnDeleteStaff.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDeleteStaffActionPerformed(evt);
+            }
+        });
+
+        btnSearch.setText("Search");
+        btnSearch.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSearchActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -169,7 +193,6 @@ public final class AdminForm extends javax.swing.JFrame {
                     .addComponent(jScrollPane2)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(userTitle)
                             .addComponent(desc)
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(btnCreate)
@@ -178,8 +201,20 @@ public final class AdminForm extends javax.swing.JFrame {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(btnDelete))
                             .addComponent(staffTitle)
-                            .addComponent(btnCreateNewStaff))
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(btnCreateNewStaff)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jButton1)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(btnDeleteStaff)))
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(userTitle)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(searchBox, javax.swing.GroupLayout.PREFERRED_SIZE, 278, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnSearch)
+                        .addGap(5, 5, 5)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -191,9 +226,12 @@ public final class AdminForm extends javax.swing.JFrame {
                     .addComponent(title))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(desc)
-                .addGap(29, 29, 29)
-                .addComponent(userTitle)
-                .addGap(9, 9, 9)
+                .addGap(24, 24, 24)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(userTitle)
+                    .addComponent(searchBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnSearch))
+                .addGap(3, 3, 3)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 263, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -205,7 +243,10 @@ public final class AdminForm extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 266, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnCreateNewStaff)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnCreateNewStaff)
+                    .addComponent(jButton1)
+                    .addComponent(btnDeleteStaff))
                 .addContainerGap(151, Short.MAX_VALUE))
         );
 
@@ -304,7 +345,7 @@ public final class AdminForm extends javax.swing.JFrame {
 
             String getExpenseIdString = (String) data[0];
             int expenseId = Integer.parseInt(getExpenseIdString);
-            
+
             request.setId(expenseId);
 
             UpdateForm updateForm = new UpdateForm(expenseId);
@@ -323,43 +364,155 @@ public final class AdminForm extends javax.swing.JFrame {
         createStaffForm.setVisible(true);
         dispose();
     }//GEN-LAST:event_btnCreateNewStaffActionPerformed
-    
-    public void getAllStaff(){
+
+    private void btnDeleteStaffActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteStaffActionPerformed
+        // TODO add your handling code here:
+        int row = staffTable.getSelectedRow();
+
+        if (row != -1) {
+
+            int columnCount = staffTable.getColumnCount();
+            Object[] data = new Object[columnCount];
+
+            for (int i = 0; i < columnCount; i++) {
+                data[i] = staffTable.getValueAt(row, i);
+            }
+
+            String getStaff = (String) data[3];
+
+            System.out.println(getStaff);
+
+            String sql = "DELETE FROM staff WHERE username = ?";
+
+            try {
+                Connection conn = DatabaseConfig.getConnection();
+
+                PreparedStatement pst = conn.prepareStatement(sql);
+                
+                pst.setString(1, getStaff);
+                
+                
+                int confirmed = JOptionPane.showConfirmDialog(
+                        this,
+                        "Are you sure you want to delete this staff ?",
+                        "Delete Confirmation",
+                        JOptionPane.YES_NO_OPTION
+                );
+                
+                if(confirmed == JOptionPane.YES_OPTION){
+                    pst.executeUpdate();
+                    getAllStaff();
+                }
+                
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+
+        }
+
+    }//GEN-LAST:event_btnDeleteStaffActionPerformed
+
+    private void btnSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchActionPerformed
+        // TODO add your handling code here:
+        String inputSearch = searchBox.getText();
         
-        String sql = "SELECT * FROM staff WHERE role = 'user'";
+        String sql = "SELECT expense.id, expense.date, expense.description, expense.amount, expense.picture, staff.s_name FROM expense INNER JOIN staff ON expense.s_id=staff.s_id WHERE staff.s_name LIKE LOWER(?)";
         
         try{
             Connection conn = DatabaseConfig.getConnection();
             
             PreparedStatement pst = conn.prepareStatement(sql);
-
+            
+            pst.setString(1, "%" + inputSearch + "%");
+            
             ResultSet rs = pst.executeQuery();
             
+            DefaultTableModel table = (DefaultTableModel) userTable.getModel();
+
+            table.setColumnIdentifiers(new Object[]{"No", "Date", "Description", "Amount", "Picture", "Staff Name"});
+
+            table.setNumRows(0);
+
+            int i = 1;
+
+            while (rs.next()) {
+
+                InputStream streamImage = rs.getBinaryStream("picture");
+                ImageIcon imageIcon = null;
+
+                try {
+                    if (streamImage != null) {
+                        BufferedImage image = ImageIO.read(streamImage);
+
+                        int oWidth = image.getWidth();
+                        int oHeight = image.getHeight();
+
+                        int nHeight = 50;
+                        int nWidth = (int) ((double) nHeight / oHeight * oWidth);
+
+                        imageIcon = new ImageIcon(image);
+
+                        Image img = imageIcon.getImage();
+                        Image resize = img.getScaledInstance(nWidth, nHeight, Image.SCALE_SMOOTH);
+                        imageIcon = new ImageIcon(resize);
+                    }
+                } catch (IOException ex) {
+                }
+
+                Object[] row = {
+                    rs.getString("id"),
+                    rs.getDate("date"),
+                    rs.getString("description"),
+                    rs.getDouble("amount"),
+                    imageIcon,
+                    rs.getString("s_name")
+                };
+
+                table.addRow(row);
+            }
+            userTable.getColumnModel().getColumn(4).setCellRenderer(new ImageRender());
+            
+        }catch(SQLException e){
+            e.printStackTrace();
+        }
+    }//GEN-LAST:event_btnSearchActionPerformed
+
+    public void getAllStaff() {
+
+        String sql = "SELECT * FROM staff WHERE role = 'user'";
+
+        try {
+            Connection conn = DatabaseConfig.getConnection();
+
+            PreparedStatement pst = conn.prepareStatement(sql);
+
+            ResultSet rs = pst.executeQuery();
+
             DefaultTableModel table = (DefaultTableModel) staffTable.getModel();
 
             table.setColumnIdentifiers(new Object[]{"No", "Staff Name", "Position", "Username"});
 
             table.setNumRows(0);
-            
-            int i = 1;            
 
-            while(rs.next()){
-                
+            int i = 1;
+
+            while (rs.next()) {
+
                 Object[] row = {
                     i++,
                     rs.getString("s_name"),
                     rs.getString("position"),
                     rs.getString("username")
                 };
-                
+
                 table.addRow(row);
             }
-            
-        }catch(SQLException e){
+
+        } catch (SQLException e) {
             e.printStackTrace();
         }
     }
-    
+
     public void getAllExpense() {
 
         String url = "jdbc:mysql://localhost:3306/db_java_v1";
@@ -375,7 +528,6 @@ public final class AdminForm extends javax.swing.JFrame {
             ResultSet rs = stmt.executeQuery();
 
             //System.out.println(rs.findColumn("s_name"));
-
             DefaultTableModel table = (DefaultTableModel) userTable.getModel();
 
             table.setColumnIdentifiers(new Object[]{"No", "Date", "Description", "Amount", "Picture", "Staff Name"});
@@ -466,11 +618,15 @@ public final class AdminForm extends javax.swing.JFrame {
     private javax.swing.JButton btnCreate;
     private javax.swing.JButton btnCreateNewStaff;
     private javax.swing.JButton btnDelete;
+    private javax.swing.JButton btnDeleteStaff;
     private javax.swing.JButton btnLogout;
+    private javax.swing.JButton btnSearch;
     private javax.swing.JButton btnUpdate;
     private javax.swing.JLabel desc;
+    private javax.swing.JButton jButton1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JTextField searchBox;
     private javax.swing.JTable staffTable;
     private javax.swing.JLabel staffTitle;
     private javax.swing.JLabel title;
