@@ -114,6 +114,7 @@ public class UserForm extends javax.swing.JFrame {
         tablePanelForUser = new javax.swing.JScrollPane();
         userExpenseTable = new javax.swing.JTable();
         btnLogout = new javax.swing.JButton();
+        btnChangePws = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -153,6 +154,13 @@ public class UserForm extends javax.swing.JFrame {
             }
         });
 
+        btnChangePws.setText("Change Password");
+        btnChangePws.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnChangePwsActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -163,7 +171,8 @@ public class UserForm extends javax.swing.JFrame {
                     .addComponent(tablePanelForUser, javax.swing.GroupLayout.DEFAULT_SIZE, 788, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(desc)
-                        .addGap(0, 0, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnChangePws))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(title)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -177,10 +186,12 @@ public class UserForm extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(btnLogout)
                     .addComponent(title))
-                .addGap(12, 12, 12)
-                .addComponent(desc)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(tablePanelForUser, javax.swing.GroupLayout.DEFAULT_SIZE, 313, Short.MAX_VALUE)
+                .addGap(7, 7, 7)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(desc)
+                    .addComponent(btnChangePws))
+                .addGap(11, 11, 11)
+                .addComponent(tablePanelForUser, javax.swing.GroupLayout.DEFAULT_SIZE, 302, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -194,6 +205,13 @@ public class UserForm extends javax.swing.JFrame {
         loginForm.setVisible(true);
         dispose();
     }//GEN-LAST:event_btnLogoutActionPerformed
+
+    private void btnChangePwsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnChangePwsActionPerformed
+        // TODO add your handling code here:
+        ChangePasswordForm changePasswordForm = new ChangePasswordForm(staffId);
+        changePasswordForm.setVisible(true);
+        dispose();
+    }//GEN-LAST:event_btnChangePwsActionPerformed
 
     /**
      * @param args the command line arguments
@@ -230,6 +248,7 @@ public class UserForm extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnChangePws;
     private javax.swing.JButton btnLogout;
     private javax.swing.JLabel desc;
     private javax.swing.JScrollPane tablePanelForUser;
