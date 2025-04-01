@@ -4,17 +4,27 @@
  */
 package expense_management.java;
 
+import config.DatabaseConfig;
+import java.awt.Image;
+import java.io.File;
+import javax.swing.JOptionPane;
+import java.sql.*;
+import javax.swing.ImageIcon;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author user
  */
-public class ProductForm extends javax.swing.JFrame {
+public final class ProductForm extends javax.swing.JFrame {
 
     /**
      * Creates new form ProductForm
      */
     public ProductForm() {
         initComponents();
+        getAllCategories();
+        getAllProducts();
     }
 
     /**
@@ -26,6 +36,16 @@ public class ProductForm extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jScrollPane2 = new javax.swing.JScrollPane();
+        jTable2 = new javax.swing.JTable();
+        title = new javax.swing.JLabel();
+        desc = new javax.swing.JLabel();
+        categoryBtn = new javax.swing.JButton();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        tableProduct = new javax.swing.JTable();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        tblCategory = new javax.swing.JTable();
+        btnCreate = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu2 = new javax.swing.JMenu();
         staffMenu = new javax.swing.JMenuItem();
@@ -33,8 +53,70 @@ public class ProductForm extends javax.swing.JFrame {
         actionMenu = new javax.swing.JMenu();
         logoutMenu = new javax.swing.JMenuItem();
 
+        jTable2.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        jScrollPane2.setViewportView(jTable2);
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setPreferredSize(new java.awt.Dimension(1200, 900));
+
+        title.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
+        title.setText("WELCOME PRODUCT");
+
+        desc.setFont(new java.awt.Font("Segoe UI", 2, 12)); // NOI18N
+        desc.setForeground(new java.awt.Color(255, 0, 0));
+        desc.setText("*** You are login as user Admin. You can use CRUD Operator to Create, Read, Update, and Delete user expense records. Thank you!");
+
+        categoryBtn.setText("New Category");
+        categoryBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                categoryBtnActionPerformed(evt);
+            }
+        });
+
+        tableProduct.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null}
+            },
+            new String [] {
+                "ID", "Product Name", "Qty", "Price", "Image", "Category Name"
+            }
+        ));
+        tableProduct.setRowHeight(50);
+        jScrollPane1.setViewportView(tableProduct);
+
+        tblCategory.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null}
+            },
+            new String [] {
+                "ID", "Category Name"
+            }
+        ));
+        tblCategory.setRowHeight(50);
+        jScrollPane3.setViewportView(tblCategory);
+
+        btnCreate.setText("New Product");
+        btnCreate.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCreateActionPerformed(evt);
+            }
+        });
 
         jMenu2.setText("Services");
 
@@ -80,11 +162,42 @@ public class ProductForm extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 600, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(title)
+                            .addComponent(desc))
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 920, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnCreate))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(categoryBtn)
+                                .addGap(0, 153, Short.MAX_VALUE))
+                            .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 477, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(title)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(desc)
+                .addGap(12, 12, 12)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(categoryBtn)
+                    .addComponent(btnCreate))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
@@ -114,8 +227,122 @@ public class ProductForm extends javax.swing.JFrame {
 
     private void actionMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_actionMenuActionPerformed
         // TODO add your handling code here:
-
     }//GEN-LAST:event_actionMenuActionPerformed
+
+    private void categoryBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_categoryBtnActionPerformed
+        // TODO add your handling code here:
+        String input = JOptionPane.showInputDialog("Please enter new category:");
+        if (input == null) {
+            System.out.println("Null");
+        } else {
+            System.out.println(input);
+
+            String sql = "INSERT INTO category (category_name) VALUES (?)";
+
+            try {
+                Connection conn = DatabaseConfig.getConnection();
+
+                PreparedStatement psm = conn.prepareStatement(sql);
+
+                psm.setString(1, input);
+
+                int rowsInserted = psm.executeUpdate();
+
+                if (rowsInserted > 0) {
+                    JOptionPane.showMessageDialog(null, "Category created successfully!", "Success", JOptionPane.INFORMATION_MESSAGE);
+                    getAllProducts();
+                } else {
+                    JOptionPane.showMessageDialog(null, "Failed to create category.", "Error", JOptionPane.ERROR_MESSAGE);
+                }
+
+            } catch (SQLException e) {
+                e.printStackTrace();
+                JOptionPane.showMessageDialog(null, "Database error: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+    }//GEN-LAST:event_categoryBtnActionPerformed
+
+    private void btnCreateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCreateActionPerformed
+        // TODO add your handling code here:
+        CreateProductForm createProductForm = new CreateProductForm();
+        createProductForm.setVisible(true);
+        dispose();
+    }//GEN-LAST:event_btnCreateActionPerformed
+
+    public void getAllProducts() {
+        String sql = "SELECT * FROM product p JOIN category c ON p.category_id = c.category_id";
+
+        try {
+            Connection conn = DatabaseConfig.getConnection();
+            PreparedStatement psm = conn.prepareStatement(sql);
+            ResultSet rs = psm.executeQuery();
+
+            DefaultTableModel table = (DefaultTableModel) tableProduct.getModel();
+            table.setColumnIdentifiers(new Object[]{"ID", "Product Name", "Qty", "Price", "Image", "Category Name"});
+            table.setRowCount(0);
+
+            int i = 1;
+            while (rs.next()) {
+                ImageIcon imageIcon = null;
+                String filePath = rs.getString("Image"); // Get image file path
+
+                if (filePath != null && !filePath.isEmpty()) {
+                    File imgFile = new File(filePath);
+                    if (imgFile.exists()) {  // Ensure the file exists
+
+                        imageIcon = new ImageIcon(new ImageIcon(filePath).getImage()
+                                .getScaledInstance(50, 50, Image.SCALE_SMOOTH)); // Resize image
+                    } else {
+                        System.out.println("Image file not found: " + filePath);
+                    }
+                }
+
+                Object[] row = {
+                    i++,
+                    rs.getString("product_name"),
+                    rs.getInt("qty"),
+                    rs.getDouble("price"),
+                    imageIcon,
+                    rs.getString("category_name")
+                };
+                table.addRow(row);
+                tableProduct.getColumnModel().getColumn(4).setCellRenderer(new ImageRender());
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    void getAllCategories() {
+        String sql = "SELECT category_name FROM category";
+
+        try {
+            Connection conn = DatabaseConfig.getConnection();
+
+            PreparedStatement psm = conn.prepareStatement(sql);
+
+            ResultSet rs = psm.executeQuery();
+
+            //System.out.print(rs.findColumn("category_name"));
+            DefaultTableModel table = (DefaultTableModel) tblCategory.getModel();
+
+            table.setColumnIdentifiers(new Object[]{"ID", "Category Name"});
+
+            table.setRowCount(0);
+
+            int i = 1;
+            while (rs.next()) {
+                Object[] row = {
+                    i++,
+                    rs.getString("category_name")
+                };
+                table.addRow(row);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 
     /**
      * @param args the command line arguments
@@ -154,10 +381,20 @@ public class ProductForm extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenu actionMenu;
+    private javax.swing.JButton btnCreate;
+    private javax.swing.JButton categoryBtn;
+    private javax.swing.JLabel desc;
     private javax.swing.JMenuItem expenseMenu;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JTable jTable2;
     private javax.swing.JMenuItem logoutMenu;
     private javax.swing.JMenuItem staffMenu;
+    private javax.swing.JTable tableProduct;
+    private javax.swing.JTable tblCategory;
+    private javax.swing.JLabel title;
     // End of variables declaration//GEN-END:variables
 }
