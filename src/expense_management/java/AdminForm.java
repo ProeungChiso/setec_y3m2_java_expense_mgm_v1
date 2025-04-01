@@ -59,7 +59,7 @@ public final class AdminForm extends javax.swing.JFrame {
         btnSearch = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setPreferredSize(new java.awt.Dimension(800, 900));
+        setPreferredSize(new java.awt.Dimension(1200, 900));
 
         title.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
         title.setText("WELCOME ADMIN");
