@@ -309,7 +309,6 @@ public final class AdminForm extends javax.swing.JFrame {
             request.setId(expenseId);
 
             UpdateForm updateForm = new UpdateForm(expenseId);
-
             updateForm.setVisible(true);
             dispose();
         } else {
@@ -408,7 +407,6 @@ public final class AdminForm extends javax.swing.JFrame {
         productForm.setVisible(true);
         dispose();
     }//GEN-LAST:event_jMenuItem1ActionPerformed
-
 
     public void getAllExpense() {
 

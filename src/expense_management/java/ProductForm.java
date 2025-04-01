@@ -46,6 +46,7 @@ public final class ProductForm extends javax.swing.JFrame {
         jScrollPane3 = new javax.swing.JScrollPane();
         tblCategory = new javax.swing.JTable();
         btnCreate = new javax.swing.JButton();
+        btnUpdate = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu2 = new javax.swing.JMenu();
         staffMenu = new javax.swing.JMenuItem();
@@ -118,6 +119,13 @@ public final class ProductForm extends javax.swing.JFrame {
             }
         });
 
+        btnUpdate.setText("Update");
+        btnUpdate.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnUpdateActionPerformed(evt);
+            }
+        });
+
         jMenu2.setText("Services");
 
         staffMenu.setText("Staff");
@@ -173,7 +181,10 @@ public final class ProductForm extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 920, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(btnCreate))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(btnCreate)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(btnUpdate)))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
@@ -192,7 +203,8 @@ public final class ProductForm extends javax.swing.JFrame {
                 .addGap(12, 12, 12)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(categoryBtn)
-                    .addComponent(btnCreate))
+                    .addComponent(btnCreate)
+                    .addComponent(btnUpdate))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -268,6 +280,32 @@ public final class ProductForm extends javax.swing.JFrame {
         createProductForm.setVisible(true);
         dispose();
     }//GEN-LAST:event_btnCreateActionPerformed
+
+    private void btnUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateActionPerformed
+        
+        System.out.println(tableProduct.getSelectedRow());
+        int row = tableProduct.getSelectedRow();
+
+        if (row != -1) {
+            int columnCount = tableProduct.getColumnCount();
+            Object[] data = new Object[columnCount];
+
+            for (int i = 0; i < columnCount; i++) {
+                data[i] = tableProduct.getValueAt(row, i);
+            }
+
+            String getProductName = (String) data[1];
+            
+            System.out.println(getProductName);
+            
+            UpdateProductForm updateProductForm = new UpdateProductForm(getProductName);
+            updateProductForm.setVisible(true);
+            dispose();
+            
+        } else {
+            JOptionPane.showMessageDialog(this, "Please select a row to update.", "No row selected", JOptionPane.WARNING_MESSAGE);
+        }
+    }//GEN-LAST:event_btnUpdateActionPerformed
 
     public void getAllProducts() {
         String sql = "SELECT * FROM product p JOIN category c ON p.category_id = c.category_id";
@@ -382,6 +420,7 @@ public final class ProductForm extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenu actionMenu;
     private javax.swing.JButton btnCreate;
+    private javax.swing.JButton btnUpdate;
     private javax.swing.JButton categoryBtn;
     private javax.swing.JLabel desc;
     private javax.swing.JMenuItem expenseMenu;
