@@ -28,7 +28,6 @@ public final class AdminForm extends javax.swing.JFrame {
     public AdminForm() {
         initComponents();
         getAllExpense();
-        getAllStaff();
     }
 
     /**
@@ -40,8 +39,8 @@ public final class AdminForm extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jMenu1 = new javax.swing.JMenu();
         title = new javax.swing.JLabel();
-        btnLogout = new javax.swing.JButton();
         desc = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         userTable = new javax.swing.JTable();
@@ -49,31 +48,22 @@ public final class AdminForm extends javax.swing.JFrame {
         btnCreate = new javax.swing.JButton();
         btnUpdate = new javax.swing.JButton();
         btnDelete = new javax.swing.JButton();
-        btnCreateNewStaff = new javax.swing.JButton();
-        staffTitle = new javax.swing.JLabel();
-        jScrollPane2 = new javax.swing.JScrollPane();
-        staffTable = new javax.swing.JTable();
-        jButton1 = new javax.swing.JButton();
-        btnDeleteStaff = new javax.swing.JButton();
         searchBox = new javax.swing.JTextField();
         btnSearch = new javax.swing.JButton();
+        jMenuBar1 = new javax.swing.JMenuBar();
+        jMenu2 = new javax.swing.JMenu();
+        jMenuItem1 = new javax.swing.JMenuItem();
+        staffMenu = new javax.swing.JMenuItem();
+        actionMenu = new javax.swing.JMenu();
+        logoutMenu = new javax.swing.JMenuItem();
+
+        jMenu1.setText("jMenu1");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setPreferredSize(new java.awt.Dimension(1200, 900));
 
         title.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
         title.setText("WELCOME ADMIN");
-
-        btnLogout.setBackground(new java.awt.Color(255, 0, 0));
-        btnLogout.setForeground(new java.awt.Color(255, 255, 255));
-        btnLogout.setText("Logout");
-        btnLogout.setBorderPainted(false);
-        btnLogout.setFocusPainted(false);
-        btnLogout.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnLogoutActionPerformed(evt);
-            }
-        });
 
         desc.setFont(new java.awt.Font("Segoe UI", 2, 12)); // NOI18N
         desc.setForeground(new java.awt.Color(255, 0, 0));
@@ -130,53 +120,52 @@ public final class AdminForm extends javax.swing.JFrame {
             }
         });
 
-        btnCreateNewStaff.setBackground(new java.awt.Color(0, 255, 51));
-        btnCreateNewStaff.setForeground(new java.awt.Color(255, 255, 255));
-        btnCreateNewStaff.setText("Add New Staff");
-        btnCreateNewStaff.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnCreateNewStaffActionPerformed(evt);
-            }
-        });
-
-        staffTitle.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        staffTitle.setText("STAFFS");
-
-        staffTable.setBackground(new java.awt.Color(255, 255, 255));
-        staffTable.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
-            },
-            new String [] {
-                "No", "Staff Name", "Position", "Username"
-            }
-        ));
-        staffTable.setRowHeight(50);
-        staffTable.setRowSelectionAllowed(false);
-        jScrollPane2.setViewportView(staffTable);
-
-        jButton1.setBackground(new java.awt.Color(0, 0, 255));
-        jButton1.setForeground(new java.awt.Color(255, 255, 255));
-        jButton1.setText("Update");
-
-        btnDeleteStaff.setBackground(new java.awt.Color(255, 0, 0));
-        btnDeleteStaff.setForeground(new java.awt.Color(255, 255, 255));
-        btnDeleteStaff.setText("Delete");
-        btnDeleteStaff.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnDeleteStaffActionPerformed(evt);
-            }
-        });
-
         btnSearch.setText("Search");
         btnSearch.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnSearchActionPerformed(evt);
             }
         });
+
+        jMenu2.setText("Services");
+
+        jMenuItem1.setText("Product");
+        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem1ActionPerformed(evt);
+            }
+        });
+        jMenu2.add(jMenuItem1);
+
+        staffMenu.setText("Staff");
+        staffMenu.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                staffMenuActionPerformed(evt);
+            }
+        });
+        jMenu2.add(staffMenu);
+
+        jMenuBar1.add(jMenu2);
+
+        actionMenu.setText("Actions");
+        actionMenu.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                actionMenuActionPerformed(evt);
+            }
+        });
+
+        logoutMenu.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_L, java.awt.event.InputEvent.CTRL_DOWN_MASK));
+        logoutMenu.setText("Logout");
+        logoutMenu.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                logoutMenuActionPerformed(evt);
+            }
+        });
+        actionMenu.add(logoutMenu);
+
+        jMenuBar1.add(actionMenu);
+
+        setJMenuBar(jMenuBar1);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -187,43 +176,30 @@ public final class AdminForm extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane1)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(title)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 509, Short.MAX_VALUE)
-                        .addComponent(btnLogout))
-                    .addComponent(jScrollPane2)
+                        .addComponent(userTitle)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(searchBox, javax.swing.GroupLayout.PREFERRED_SIZE, 278, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnSearch)
+                        .addGap(5, 5, 5))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(title)
                             .addComponent(desc)
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(btnCreate)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(btnUpdate)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(btnDelete))
-                            .addComponent(staffTitle)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(btnCreateNewStaff)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jButton1)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(btnDeleteStaff)))
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(userTitle)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(searchBox, javax.swing.GroupLayout.PREFERRED_SIZE, 278, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnSearch)
-                        .addGap(5, 5, 5)))
+                                .addComponent(btnDelete)))
+                        .addGap(0, 106, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btnLogout)
-                    .addComponent(title))
+                .addComponent(title)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(desc)
                 .addGap(24, 24, 24)
@@ -233,33 +209,17 @@ public final class AdminForm extends javax.swing.JFrame {
                     .addComponent(btnSearch))
                 .addGap(3, 3, 3)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 263, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(0, 0, 0)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnCreate)
                     .addComponent(btnUpdate)
                     .addComponent(btnDelete))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(staffTitle)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 266, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnCreateNewStaff)
-                    .addComponent(jButton1)
-                    .addComponent(btnDeleteStaff))
-                .addContainerGap(151, Short.MAX_VALUE))
+                .addGap(0, 0, Short.MAX_VALUE))
         );
 
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
-
-    private void btnLogoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLogoutActionPerformed
-        // TODO add your handling code here:
-        LoginForm loginForm = new LoginForm();
-        loginForm.setVisible(true);
-        dispose();
-    }//GEN-LAST:event_btnLogoutActionPerformed
 
     private void btnCreateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCreateActionPerformed
         // TODO add your handling code here:
@@ -358,60 +318,6 @@ public final class AdminForm extends javax.swing.JFrame {
 
     }//GEN-LAST:event_btnUpdateActionPerformed
 
-    private void btnCreateNewStaffActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCreateNewStaffActionPerformed
-        // TODO add your handling code here:
-        CreateStaffForm createStaffForm = new CreateStaffForm();
-        createStaffForm.setVisible(true);
-        dispose();
-    }//GEN-LAST:event_btnCreateNewStaffActionPerformed
-
-    private void btnDeleteStaffActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteStaffActionPerformed
-        // TODO add your handling code here:
-        int row = staffTable.getSelectedRow();
-
-        if (row != -1) {
-
-            int columnCount = staffTable.getColumnCount();
-            Object[] data = new Object[columnCount];
-
-            for (int i = 0; i < columnCount; i++) {
-                data[i] = staffTable.getValueAt(row, i);
-            }
-
-            String getStaff = (String) data[3];
-
-            System.out.println(getStaff);
-
-            String sql = "DELETE FROM staff WHERE username = ?";
-
-            try {
-                Connection conn = DatabaseConfig.getConnection();
-
-                PreparedStatement pst = conn.prepareStatement(sql);
-                
-                pst.setString(1, getStaff);
-                
-                
-                int confirmed = JOptionPane.showConfirmDialog(
-                        this,
-                        "Are you sure you want to delete this staff ?",
-                        "Delete Confirmation",
-                        JOptionPane.YES_NO_OPTION
-                );
-                
-                if(confirmed == JOptionPane.YES_OPTION){
-                    pst.executeUpdate();
-                    getAllStaff();
-                }
-                
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-
-        }
-
-    }//GEN-LAST:event_btnDeleteStaffActionPerformed
-
     private void btnSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchActionPerformed
         // TODO add your handling code here:
         String inputSearch = searchBox.getText();
@@ -477,41 +383,32 @@ public final class AdminForm extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btnSearchActionPerformed
 
-    public void getAllStaff() {
+    private void actionMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_actionMenuActionPerformed
+        // TODO add your handling code here:
+        
+    }//GEN-LAST:event_actionMenuActionPerformed
 
-        String sql = "SELECT * FROM staff WHERE role = 'user'";
+    private void logoutMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_logoutMenuActionPerformed
+        // TODO add your handling code here:
+        LoginForm loginForm = new LoginForm();
+        loginForm.setVisible(true);
+        dispose();
+    }//GEN-LAST:event_logoutMenuActionPerformed
 
-        try {
-            Connection conn = DatabaseConfig.getConnection();
+    private void staffMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_staffMenuActionPerformed
+        // TODO add your handling code here:
+        StaffForm staffForm = new StaffForm();
+        staffForm.setVisible(true);
+        dispose();
+    }//GEN-LAST:event_staffMenuActionPerformed
 
-            PreparedStatement pst = conn.prepareStatement(sql);
+    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
+        // TODO add your handling code here:
+        ProductForm productForm = new ProductForm();
+        productForm.setVisible(true);
+        dispose();
+    }//GEN-LAST:event_jMenuItem1ActionPerformed
 
-            ResultSet rs = pst.executeQuery();
-
-            DefaultTableModel table = (DefaultTableModel) staffTable.getModel();
-
-            table.setColumnIdentifiers(new Object[]{"No", "Staff Name", "Position", "Username"});
-
-            table.setNumRows(0);
-
-            int i = 1;
-
-            while (rs.next()) {
-
-                Object[] row = {
-                    i++,
-                    rs.getString("s_name"),
-                    rs.getString("position"),
-                    rs.getString("username")
-                };
-
-                table.addRow(row);
-            }
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
 
     public void getAllExpense() {
 
@@ -615,20 +512,20 @@ public final class AdminForm extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JMenu actionMenu;
     private javax.swing.JButton btnCreate;
-    private javax.swing.JButton btnCreateNewStaff;
     private javax.swing.JButton btnDelete;
-    private javax.swing.JButton btnDeleteStaff;
-    private javax.swing.JButton btnLogout;
     private javax.swing.JButton btnSearch;
     private javax.swing.JButton btnUpdate;
     private javax.swing.JLabel desc;
-    private javax.swing.JButton jButton1;
+    private javax.swing.JMenu jMenu1;
+    private javax.swing.JMenu jMenu2;
+    private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JMenuItem logoutMenu;
     private javax.swing.JTextField searchBox;
-    private javax.swing.JTable staffTable;
-    private javax.swing.JLabel staffTitle;
+    private javax.swing.JMenuItem staffMenu;
     private javax.swing.JLabel title;
     private javax.swing.JTable userTable;
     private javax.swing.JLabel userTitle;
