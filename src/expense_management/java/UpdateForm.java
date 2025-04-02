@@ -27,7 +27,7 @@ import javax.swing.JOptionPane;
  *
  * @author PC
  */
-public class UpdateForm extends javax.swing.JFrame {
+public final class UpdateForm extends javax.swing.JFrame {
 
     CreateExpenseRequest createRequest = new CreateExpenseRequest();
     Staff staff = new Staff();
@@ -36,6 +36,7 @@ public class UpdateForm extends javax.swing.JFrame {
 
     /**
      * Creates new form CreateForm
+     * @param expenseId
      */
     public UpdateForm(int expenseId) {
         initComponents();

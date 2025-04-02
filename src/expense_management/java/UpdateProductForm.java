@@ -19,17 +19,55 @@ public final class UpdateProductForm extends javax.swing.JFrame {
 
     /**
      * Creates new form CreateProductForm
+     *
      * @param productName
      */
-    
     private String proName;
-    
+
     public UpdateProductForm(String productName) {
         initComponents();
         getAllCategorys();
         proName = productName;
-        
-        System.out.println(proName);
+        getProductByProName(proName);
+    }
+
+    private void getProductByProName(String proName) {
+
+        String sql = "SELECT * FROM product WHERE product_name = ?";
+
+        try {
+            Connection conn = DatabaseConfig.getConnection();
+
+            PreparedStatement psm = conn.prepareStatement(sql);
+
+            psm.setString(1, proName);
+
+            ResultSet rs = psm.executeQuery();
+
+            while(rs.next())
+            {
+                String product_name = rs.getString("product_name");
+                int product_qty = rs.getInt("qty");
+                Double product_price = rs.getDouble("price");
+                String product_image = rs.getString("image");
+                
+                inputName.setText(product_name);
+                inputPrice.setText(product_price + "");
+                inputQty.setText(product_qty + "");
+                
+                if(product_image == null || "".equals(product_image)){
+                    btnChooseImage.setText("Select Image");
+                }else{
+                    btnChooseImage.setText(product_image);
+                }
+               
+                System.out.println("GET: " + product_name + product_qty + product_price + product_image);
+            }
+
+        } catch (SQLException e) {
+
+        }
+
     }
 
     /**
@@ -52,11 +90,10 @@ public final class UpdateProductForm extends javax.swing.JFrame {
         comboCategory = new javax.swing.JComboBox<>();
         jLabel5 = new javax.swing.JLabel();
         btnChooseImage = new javax.swing.JButton();
-        jButton1 = new javax.swing.JButton();
-        addProduct = new javax.swing.JButton();
+        updateProduct = new javax.swing.JButton();
 
         createTitle.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
-        createTitle.setText("Create New Product");
+        createTitle.setText("Update Product");
 
         inputQty.setText("0");
 
@@ -85,14 +122,12 @@ public final class UpdateProductForm extends javax.swing.JFrame {
             }
         });
 
-        jButton1.setText("Add & Close");
-
-        addProduct.setBackground(new java.awt.Color(0, 0, 255));
-        addProduct.setForeground(new java.awt.Color(255, 255, 255));
-        addProduct.setText("Add");
-        addProduct.addActionListener(new java.awt.event.ActionListener() {
+        updateProduct.setBackground(new java.awt.Color(0, 0, 255));
+        updateProduct.setForeground(new java.awt.Color(255, 255, 255));
+        updateProduct.setText("Update");
+        updateProduct.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                addProductActionPerformed(evt);
+                updateProductActionPerformed(evt);
             }
         });
 
@@ -103,10 +138,6 @@ public final class UpdateProductForm extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGap(25, 25, 25)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                        .addComponent(addProduct)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addComponent(jLabel5, javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(createTitle, javax.swing.GroupLayout.Alignment.LEADING)
@@ -123,11 +154,10 @@ public final class UpdateProductForm extends javax.swing.JFrame {
                                 .addComponent(jLabel3)))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel4)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addComponent(jLabel4)
                             .addComponent(comboCategory, 0, 107, Short.MAX_VALUE)))
-                    .addComponent(btnChooseImage, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(btnChooseImage, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(updateProduct, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap(25, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -154,9 +184,7 @@ public final class UpdateProductForm extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnChooseImage)
                 .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton1)
-                    .addComponent(addProduct))
+                .addComponent(updateProduct)
                 .addContainerGap(24, Short.MAX_VALUE))
         );
 
@@ -183,8 +211,8 @@ public final class UpdateProductForm extends javax.swing.JFrame {
             psm.setString(1, selected);
 
             ResultSet rs = psm.executeQuery();
-            
-            if(rs.next()){
+
+            if (rs.next()) {
                 categoryId = rs.getInt("category_id");
             }
             System.out.println(categoryId);
@@ -224,7 +252,7 @@ public final class UpdateProductForm extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btnChooseImageActionPerformed
 
-    private void addProductActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addProductActionPerformed
+    private void updateProductActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updateProductActionPerformed
 
         String productName = inputName.getText();
         int productQty = Integer.parseInt(inputQty.getText());
@@ -232,7 +260,7 @@ public final class UpdateProductForm extends javax.swing.JFrame {
         int productCategory = categoryId;
         String productImage = imagePath;
 
-        String sql = "INSERT INTO product (product_name, qty, price, Image, category_id) VALUES (?,?,?,?,?)";
+        String sql = "UPDATE product SET product_name = ?, qty = ?, price = ?, Image = ?, category_id = ? WHERE product_name = ?";
 
         try {
             Connection conn = DatabaseConfig.getConnection();
@@ -244,25 +272,25 @@ public final class UpdateProductForm extends javax.swing.JFrame {
             psm.setDouble(3, productPrice);
             psm.setString(4, productImage);
             psm.setInt(5, productCategory);
+            psm.setString(6, proName);
 
             int rowsInserted = psm.executeUpdate();
 
             if (rowsInserted > 0) {
-                JOptionPane.showMessageDialog(null, "Product created successfully!", "Success", JOptionPane.INFORMATION_MESSAGE);
+                JOptionPane.showMessageDialog(null, "Product update successfully!", "Success", JOptionPane.INFORMATION_MESSAGE);
                 ProductForm productForm = new ProductForm();
                 productForm.setVisible(true);
                 dispose();
-                
+
             } else {
-                JOptionPane.showMessageDialog(null, "Failed to create product.", "Error", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(null, "Failed to update product.", "Error", JOptionPane.ERROR_MESSAGE);
             }
 
         } catch (SQLException e) {
 
         }
-    }//GEN-LAST:event_addProductActionPerformed
+    }//GEN-LAST:event_updateProductActionPerformed
 
-    
     void getAllCategorys() {
         try {
 
@@ -320,18 +348,17 @@ public final class UpdateProductForm extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton addProduct;
     private javax.swing.JButton btnChooseImage;
     private javax.swing.JComboBox<String> comboCategory;
     private javax.swing.JLabel createTitle;
     private javax.swing.JTextField inputName;
     private javax.swing.JTextField inputPrice;
     private javax.swing.JTextField inputQty;
-    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
+    private javax.swing.JButton updateProduct;
     // End of variables declaration//GEN-END:variables
 }

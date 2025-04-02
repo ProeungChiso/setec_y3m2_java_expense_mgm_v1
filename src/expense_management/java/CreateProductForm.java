@@ -45,7 +45,6 @@ public class CreateProductForm extends javax.swing.JFrame {
         comboCategory = new javax.swing.JComboBox<>();
         jLabel5 = new javax.swing.JLabel();
         btnChooseImage = new javax.swing.JButton();
-        jButton1 = new javax.swing.JButton();
         addProduct = new javax.swing.JButton();
 
         createTitle.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
@@ -78,8 +77,6 @@ public class CreateProductForm extends javax.swing.JFrame {
             }
         });
 
-        jButton1.setText("Add & Close");
-
         addProduct.setBackground(new java.awt.Color(0, 0, 255));
         addProduct.setForeground(new java.awt.Color(255, 255, 255));
         addProduct.setText("Add");
@@ -96,10 +93,6 @@ public class CreateProductForm extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGap(25, 25, 25)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                        .addComponent(addProduct)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addComponent(jLabel5, javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(createTitle, javax.swing.GroupLayout.Alignment.LEADING)
@@ -116,11 +109,10 @@ public class CreateProductForm extends javax.swing.JFrame {
                                 .addComponent(jLabel3)))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel4)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addComponent(jLabel4)
                             .addComponent(comboCategory, 0, 107, Short.MAX_VALUE)))
-                    .addComponent(btnChooseImage, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(btnChooseImage, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(addProduct, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap(25, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -147,9 +139,7 @@ public class CreateProductForm extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnChooseImage)
                 .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton1)
-                    .addComponent(addProduct))
+                .addComponent(addProduct)
                 .addContainerGap(24, Short.MAX_VALUE))
         );
 
@@ -319,7 +309,6 @@ public class CreateProductForm extends javax.swing.JFrame {
     private javax.swing.JTextField inputName;
     private javax.swing.JTextField inputPrice;
     private javax.swing.JTextField inputQty;
-    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;

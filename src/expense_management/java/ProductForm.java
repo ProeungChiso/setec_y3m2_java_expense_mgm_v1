@@ -47,6 +47,9 @@ public final class ProductForm extends javax.swing.JFrame {
         tblCategory = new javax.swing.JTable();
         btnCreate = new javax.swing.JButton();
         btnUpdate = new javax.swing.JButton();
+        btnDelete = new javax.swing.JButton();
+        btnUpdateCategory = new javax.swing.JButton();
+        btnDeleteCategory = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu2 = new javax.swing.JMenu();
         staffMenu = new javax.swing.JMenuItem();
@@ -126,6 +129,27 @@ public final class ProductForm extends javax.swing.JFrame {
             }
         });
 
+        btnDelete.setText("Delete");
+        btnDelete.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDeleteActionPerformed(evt);
+            }
+        });
+
+        btnUpdateCategory.setText("Update");
+        btnUpdateCategory.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnUpdateCategoryActionPerformed(evt);
+            }
+        });
+
+        btnDeleteCategory.setText("Delete");
+        btnDeleteCategory.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDeleteCategoryActionPerformed(evt);
+            }
+        });
+
         jMenu2.setText("Services");
 
         staffMenu.setText("Staff");
@@ -184,12 +208,18 @@ public final class ProductForm extends javax.swing.JFrame {
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(btnCreate)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(btnUpdate)))
+                                .addComponent(btnUpdate)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(btnDelete)))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(categoryBtn)
-                                .addGap(0, 153, Short.MAX_VALUE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(btnUpdateCategory)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(btnDeleteCategory)
+                                .addGap(0, 0, Short.MAX_VALUE))
                             .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))))
                 .addContainerGap())
         );
@@ -204,7 +234,10 @@ public final class ProductForm extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(categoryBtn)
                     .addComponent(btnCreate)
-                    .addComponent(btnUpdate))
+                    .addComponent(btnUpdate)
+                    .addComponent(btnDelete)
+                    .addComponent(btnUpdateCategory)
+                    .addComponent(btnDeleteCategory))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -282,7 +315,7 @@ public final class ProductForm extends javax.swing.JFrame {
     }//GEN-LAST:event_btnCreateActionPerformed
 
     private void btnUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateActionPerformed
-        
+
         System.out.println(tableProduct.getSelectedRow());
         int row = tableProduct.getSelectedRow();
 
@@ -295,17 +328,167 @@ public final class ProductForm extends javax.swing.JFrame {
             }
 
             String getProductName = (String) data[1];
-            
+
             System.out.println(getProductName);
-            
+
             UpdateProductForm updateProductForm = new UpdateProductForm(getProductName);
             updateProductForm.setVisible(true);
             dispose();
-            
+
         } else {
             JOptionPane.showMessageDialog(this, "Please select a row to update.", "No row selected", JOptionPane.WARNING_MESSAGE);
         }
     }//GEN-LAST:event_btnUpdateActionPerformed
+
+    private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
+        // TODO add your handling code here:
+        System.out.println(tableProduct.getSelectedRow());
+        int row = tableProduct.getSelectedRow();
+
+        if (row != -1) {
+            int columnCount = tableProduct.getColumnCount();
+            Object[] data = new Object[columnCount];
+
+            for (int i = 0; i < columnCount; i++) {
+                data[i] = tableProduct.getValueAt(row, i);
+            }
+
+            String getProductName = (String) data[1];
+
+            System.out.println(getProductName);
+
+            String sql = "DELETE FROM product WHERE product_name = ?";
+
+            try {
+                Connection conn = DatabaseConfig.getConnection();
+
+                PreparedStatement pst = conn.prepareStatement(sql);
+
+                pst.setString(1, getProductName);
+
+                int confirmed = JOptionPane.showConfirmDialog(
+                        this,
+                        "Are you sure you want to delete this product ?",
+                        "Delete Confirmation",
+                        JOptionPane.YES_NO_OPTION
+                );
+
+                if (confirmed == JOptionPane.YES_OPTION) {
+                    pst.executeUpdate();
+                    getAllProducts();
+                }
+
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+
+        } else {
+            JOptionPane.showMessageDialog(this, "Please select a row to update.", "No row selected", JOptionPane.WARNING_MESSAGE);
+        }
+    }//GEN-LAST:event_btnDeleteActionPerformed
+
+    private void btnUpdateCategoryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateCategoryActionPerformed
+        // TODO add your handling code here:
+        System.out.println(tblCategory.getSelectedRow());
+        int row = tblCategory.getSelectedRow();
+
+        if (row != -1) {
+            int columnCount = tblCategory.getColumnCount();
+            Object[] data = new Object[columnCount];
+
+            for (int i = 0; i < columnCount; i++) {
+                data[i] = tblCategory.getValueAt(row, i);
+            }
+
+            String getCategoryName = (String) data[1];
+
+            System.out.println(getCategoryName);
+
+            String input = JOptionPane.showInputDialog("Please enter new name category:");
+            if (input == null) {
+                System.out.println("Null");
+            } else {
+                System.out.println(input);
+
+                String sql = "UPDATE category SET category_name = ? WHERE category_name = ?";
+
+                try {
+                    Connection conn = DatabaseConfig.getConnection();
+
+                    PreparedStatement psm = conn.prepareStatement(sql);
+
+                    psm.setString(1, input);
+                    psm.setString(2, getCategoryName);
+
+                    int rowsInserted = psm.executeUpdate();
+
+                    if (rowsInserted > 0) {
+                        JOptionPane.showMessageDialog(null, "Category updated successfully!", "Success", JOptionPane.INFORMATION_MESSAGE);
+                        getAllCategories();
+                        getAllProducts();
+                    } else {
+                        JOptionPane.showMessageDialog(null, "Failed to update category.", "Error", JOptionPane.ERROR_MESSAGE);
+                    }
+
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                    JOptionPane.showMessageDialog(null, "Database error: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+
+        } else {
+            JOptionPane.showMessageDialog(this, "Please select a row to update.", "No row selected", JOptionPane.WARNING_MESSAGE);
+        }
+    }//GEN-LAST:event_btnUpdateCategoryActionPerformed
+
+    private void btnDeleteCategoryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteCategoryActionPerformed
+        // TODO add your handling code here:
+        System.out.println(tblCategory.getSelectedRow());
+        int row = tblCategory.getSelectedRow();
+
+        if (row != -1) {
+            int columnCount = tblCategory.getColumnCount();
+            Object[] data = new Object[columnCount];
+
+            for (int i = 0; i < columnCount; i++) {
+                data[i] = tblCategory.getValueAt(row, i);
+            }
+
+            String getCategoryName = (String) data[1];
+
+            System.out.println(getCategoryName);
+            
+            String sql = "DELETE FROM category WHERE category_name = ?";
+
+            try {
+                Connection conn = DatabaseConfig.getConnection();
+
+                PreparedStatement pst = conn.prepareStatement(sql);
+                
+                pst.setString(1, getCategoryName);
+                
+                
+                int confirmed = JOptionPane.showConfirmDialog(
+                        this,
+                        "Are you sure you want to delete this category ?",
+                        "Delete Confirmation",
+                        JOptionPane.YES_NO_OPTION
+                );
+                
+                if(confirmed == JOptionPane.YES_OPTION){
+                    pst.executeUpdate();
+                    getAllCategories();
+                    getAllProducts();
+                }
+                
+            } catch (SQLException e) {
+                JOptionPane.showMessageDialog(this, "Database Error", e.getMessage() ,JOptionPane.WARNING_MESSAGE);
+            }
+
+        } else {
+            JOptionPane.showMessageDialog(this, "Please select a row to delete.", "No row selected", JOptionPane.WARNING_MESSAGE);
+        }
+    }//GEN-LAST:event_btnDeleteCategoryActionPerformed
 
     public void getAllProducts() {
         String sql = "SELECT * FROM product p JOIN category c ON p.category_id = c.category_id";
@@ -420,7 +603,10 @@ public final class ProductForm extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenu actionMenu;
     private javax.swing.JButton btnCreate;
+    private javax.swing.JButton btnDelete;
+    private javax.swing.JButton btnDeleteCategory;
     private javax.swing.JButton btnUpdate;
+    private javax.swing.JButton btnUpdateCategory;
     private javax.swing.JButton categoryBtn;
     private javax.swing.JLabel desc;
     private javax.swing.JMenuItem expenseMenu;
